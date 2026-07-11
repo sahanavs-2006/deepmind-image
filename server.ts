@@ -83,9 +83,11 @@ Return a detailed JSON object representing the brand strategy. It should include
       });
 
       res.json(JSON.parse(response.text || "{}"));
-    } catch (error) {
+    } catch (error: any) {
       console.error("Generate strategy error:", error);
-      res.status(500).json({ error: "Failed to generate brand strategy." });
+      let errorMessage = "Failed to generate brand strategy.";
+      if (error?.status === 429) errorMessage = "The API is currently busy or rate-limited. Please try again in a few seconds.";
+      res.status(error?.status || 500).json({ error: errorMessage, details: error.message });
     }
   });
 
@@ -135,9 +137,11 @@ Return a detailed JSON object representing the brand strategy. It should include
       }
 
       res.json({ imageUrl });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Generate asset error:", error);
-      res.status(500).json({ error: "Failed to generate asset." });
+      let errorMessage = "Failed to generate asset.";
+      if (error?.status === 429) errorMessage = "The API is currently busy or rate-limited. Please try again in a few seconds.";
+      res.status(error?.status || 500).json({ error: errorMessage, details: error.message });
     }
   });
 
@@ -188,9 +192,11 @@ Return a detailed JSON object representing the brand strategy. It should include
       }
 
       res.json({ imageUrl });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Edit asset error:", error);
-      res.status(500).json({ error: "Failed to edit asset." });
+      let errorMessage = "Failed to edit asset.";
+      if (error?.status === 429) errorMessage = "The API is currently busy or rate-limited. Please try again in a few seconds.";
+      res.status(error?.status || 500).json({ error: errorMessage, details: error.message });
     }
   });
 
@@ -210,9 +216,11 @@ Return a detailed JSON object representing the brand strategy. It should include
         }
       });
       res.json({ analysis: response.text });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Analyze image error:", error);
-      res.status(500).json({ error: "Failed to analyze image." });
+      let errorMessage = "Failed to analyze image.";
+      if (error?.status === 429) errorMessage = "The API is currently busy or rate-limited. Please try again in a few seconds.";
+      res.status(error?.status || 500).json({ error: errorMessage, details: error.message });
     }
   });
 
